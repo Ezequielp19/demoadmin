@@ -1,0 +1,57 @@
+<!-- productos.page.html -->
+
+<ion-header>
+  <ion-toolbar color="primary">
+        <ion-title style="margin-left: 500px ;"> Productos</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end" >
+      <ion-button (click)="goToAgregarProducto()" style="margin-right: 600px;" >
+        <ion-icon name="add"></ion-icon>
+        ➕
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+   <ion-toolbar>
+    <div style="display: flex; justify-content: center; width: 100%;">
+      <ion-searchbar style="max-width: 400px;" (ionInput)="filtrarProductos($event)"></ion-searchbar>
+    </div>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-grid fixed>
+    <ion-row class="header-row">
+      <ion-col size="2">Nombre</ion-col>
+      <ion-col size="2">Categoría</ion-col>
+      <ion-col size="2">Marca</ion-col>
+      <ion-col size="2">Codigo</ion-col>
+      <ion-col size="1">Precio Final</ion-col>
+      <ion-col size="1">Imagen</ion-col>
+      <ion-col size="2">Acciones</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let producto of getProductosPaginados()">
+      <ion-col size="2">{{ producto.nombre }}</ion-col>
+      <ion-col size="2">{{ getCategoriaNombre(producto.categoria) }}</ion-col>
+      <ion-col size="2">{{ getMarcaNombre(producto.marca) }}</ion-col>
+      <ion-col size="2">{{ producto.codigo }}</ion-col>
+      <ion-col size="1">{{ producto.precioFinal | number:'1.2-2' }}</ion-col>
+      <ion-col size="1">
+        <img *ngIf="producto.imagen" [src]="producto.imagen" alt="Imagen de {{ producto.nombre }}" style="width: 50px; height: 50px;" />
+      </ion-col>
+      <ion-col size="2">
+        <ion-button fill="outline" color="secondary" (click)="editarProducto(producto)">Editar</ion-button>
+        <br>
+        <ion-button color="danger" fill="outline" (click)="eliminarProducto(producto)">Eliminar</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div class="pagination-buttons" style="margin-left: 500px;">
+    <ion-button (click)="goToPreviousPage()" [disabled]="currentPage === 1">Anterior</ion-button>
+    <ion-button (click)="goToNextPage()" [disabled]="currentPage * pageSize >= productos.length">Siguiente</ion-button>
+  </div>
+</ion-content>
